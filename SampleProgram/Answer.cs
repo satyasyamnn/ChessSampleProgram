@@ -39,65 +39,47 @@ namespace SampleProgram
             Piece piece2 = board.GetPieceAtPosition(pos2);
             Piece piece3 = board.GetPieceAtPosition(pos3);
 
-            var possibleMoves1 = piece1.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
-            foreach(Position pos in possibleMoves1)
-            {
-                Console.WriteLine("{1}: My position is {0}", pos, piece1.GetType());
-            }
-            Console.WriteLine("=================");
+            PrintPossiblePositions(piece1);
+            PrintPossiblePositions(piece2);
+            PrintPossiblePositions(piece3);
 
-            var possibleMoves2 = piece2.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
-            foreach (Position pos in possibleMoves2)
-            {
-                Console.WriteLine("{1}: My position is {0}", pos, piece2.GetType());
-            }
-
-            Console.WriteLine("=================");
-            var possibleMoves3 = piece3.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
-            foreach (Position pos in possibleMoves3)
-            {
-                Console.WriteLine("{1}: My position is {0}", pos, piece3.GetType());
-            }
-            Console.WriteLine("=================");
 
             for (var move = 1; move <= moves; move++)
             {
-                pos1 = possibleMoves1[_rnd.Next(possibleMoves1.Length)];
-                if (board.CanMoveToNewSpot(pos1))
+                Move(piece1);
+                Move(piece2);
+                Move(piece3);
+            }
+        }
+
+        private void PrintPossiblePositions(Piece piece)
+        {
+            var possibleMoves = piece.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
+            foreach (Position pos in possibleMoves)
+            {
+                Console.WriteLine("{1}: My position is {0}", pos, piece.GetType());
+            }
+            Console.WriteLine("=================");
+        }
+
+        private void Move(Piece piece)
+        {
+            var possibleMoves = piece.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
+            bool retry = true;
+            while (retry)
+            {
+                Position newPosition = possibleMoves[_rnd.Next(possibleMoves.Length)];
+                if (board.CanMoveToNewSpot(newPosition))
                 {
-                    board.MovePieceToPosition(piece1.CurrentPosition, pos1, piece1);
+                    board.MovePieceToPosition(piece.CurrentPosition, newPosition, piece);
+                    retry = false;
                 }
                 else
-                { 
-
+                {
+                    Console.WriteLine(" Retrying as spot is blocked for {0}", piece.GetType());
+                    retry = true;
                 }
-                pos2 = possibleMoves2[_rnd.Next(possibleMoves2.Length)];
-                pos3 = possibleMoves3[_rnd.Next(possibleMoves3.Length)];
             }
-
-
-            /*
-
-            for (var move = 1; move <= moves; move++)
-            {
-                pos1 = possibleMoves1[_rnd.Next(possibleMoves1.Length)];
-                Console.WriteLine("{2}-{1}: My position is {0}", pos1, move, piece1.GetType());
-            }
-            Console.WriteLine("=================");
-            for (var move = 1; move <= moves; move++)
-            {
-                pos2 = possibleMoves2[_rnd.Next(possibleMoves2.Length)];
-                Console.WriteLine("{2}-{1}: My position is {0}", pos2, move, piece2.GetType());
-            }
-            Console.WriteLine("=================");
-            for (var move = 1; move <= moves; move++)
-            {
-                pos3 = possibleMoves3[_rnd.Next(possibleMoves3.Length)];
-                Console.WriteLine("{2}-{1}: My position is {0}", pos3, move, piece3.GetType());
-            }
-            Console.WriteLine("=================");
-            */
         }
     }
-
 }
