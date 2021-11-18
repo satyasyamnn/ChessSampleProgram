@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using ChessLib;
+﻿using ChessLib;
 using ChessLib.V2;
 using ChessLib.V2.Pieces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace SampleProgram.Test
 {

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ChessLib;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ChessLib;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SampleProgram.Test
 {
@@ -48,7 +48,7 @@ namespace SampleProgram.Test
             Assert.IsNotNull(moves);
             Assert.AreEqual(2, moves.Count);
 
-            var possibles = new[] {new Position(2, 3), new Position(3, 2)};
+            var possibles = new[] { new Position(2, 3), new Position(3, 2) };
 
             foreach (var possible in possibles)
             {

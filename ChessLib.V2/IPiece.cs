@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ChessLib.V2
 {
-    public abstract class Piece 
+    public abstract class Piece
     {
         public Piece(Position position)
         {
@@ -19,6 +19,11 @@ namespace ChessLib.V2
         public void SetNewPosition(Position newPosition)
         {
             CurrentPosition = newPosition;
+        }
+
+        public bool IsCurrentPositionSameAsNewPosition(Position newPosition)
+        {
+            return CurrentPosition.ToString() == newPosition.ToString();
         }
 
         protected Func<Position, int, int, bool> CheckForBoundaries = (position, dimension1, dimension2) =>

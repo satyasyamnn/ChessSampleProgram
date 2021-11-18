@@ -4,7 +4,7 @@ namespace ChessLib.V2.Pieces
 {
     public class Queen : Piece
     {
-        public Queen(Position position): base(position)
+        public Queen(Position position) : base(position)
         {
             PossibleMoves = new[,] { { -1, -1 }, { -1, +1 }, { +1, -1 }, { +1, +1 }, { -1, 0 }, { +1, 0 }, { 0, -1 }, { 0, +1 } };
         }

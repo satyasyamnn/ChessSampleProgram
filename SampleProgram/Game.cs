@@ -1,6 +1,6 @@
+using ChessLib;
 using System;
 using System.Linq;
-using ChessLib;
 
 namespace SampleProgram
 {

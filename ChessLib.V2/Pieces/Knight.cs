@@ -6,7 +6,7 @@ namespace ChessLib.V2.Pieces
     {
         private KnightMove _knightMove;
 
-        public Knight(Position position): base(position)
+        public Knight(Position position) : base(position)
         {
             _knightMove = new KnightMove();
             PossibleMoves = KnightMove.Moves;

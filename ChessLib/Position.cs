@@ -17,15 +17,15 @@ namespace ChessLib
         {
             if (obj is Position)
             {
-                var val = (Position) obj;
-                return val.X==X && val.Y==Y;
+                var val = (Position)obj;
+                return val.X == X && val.Y == Y;
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return X^Y;
+            return X ^ Y;
         }
 
         public override string ToString()

@@ -4,7 +4,7 @@ namespace ChessLib.V2.Pieces
 {
     public class Bishop : Piece
     {
-        public Bishop(Position position): base(position)
+        public Bishop(Position position) : base(position)
         {
             PossibleMoves = new[,] { { -1, -1 }, { -1, +1 }, { +1, -1 }, { +1, +1 } };
         }

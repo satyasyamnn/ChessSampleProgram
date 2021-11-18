@@ -10,73 +10,81 @@ namespace SampleProgram
     public class ComplexGame
     {
         IBoard board;
-        Position pos1;
-        Position pos2;
-        Position pos3;
+        //Position knightPosition;
+        Position bishopPosition;
+        Position queenPosition;
 
         private readonly Random _rnd = new Random();
 
         public ComplexGame()
-
         {
-            board = new Board(8, 8);
-            pos1 = new Position(3, 3);
-            pos2 = new Position(1, 3);
-            pos3 = new Position(3, 1);
-            board.ResetBoard();
+            Setup();
         }
 
         public void Setup()
         {
-            board.AddPieceAtPosition(pos1, new Knight(pos1));
-            board.AddPieceAtPosition(pos2, new Bishop(pos2));
-            board.AddPieceAtPosition(pos3, new Queen(pos3));
+            board = new Board(8, 8);
+
+            //knightPosition = new Position(3, 3);
+            bishopPosition = new Position(1, 3);
+            queenPosition = new Position(3, 1);
+
+            //board.AddPieceAtPosition(knightPosition, new Knight(knightPosition));
+            board.AddPieceAtPosition(bishopPosition, new Bishop(bishopPosition));
+            board.AddPieceAtPosition(queenPosition, new Queen(queenPosition));
         }
 
         public void Play(int moves)
         {
-            Piece piece1 = board.GetPieceAtPosition(pos1);
-            Piece piece2 = board.GetPieceAtPosition(pos2);
-            Piece piece3 = board.GetPieceAtPosition(pos3);
-
-            PrintPossiblePositions(piece1);
-            PrintPossiblePositions(piece2);
-            PrintPossiblePositions(piece3);
-
+            //Piece knight = board.GetPieceAtPosition(knightPosition);
+            Piece bishop = board.GetPieceAtPosition(bishopPosition);
+            Piece queen = board.GetPieceAtPosition(queenPosition);
 
             for (var move = 1; move <= moves; move++)
             {
-                Move(piece1);
-                Move(piece2);
-                Move(piece3);
+                //Move(knight);
+                Move(bishop);
+                Move(queen);
             }
         }
 
         private void PrintPossiblePositions(Piece piece)
         {
             var possibleMoves = piece.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
+            Console.WriteLine("======================================================");
+            Console.WriteLine("Possible Moves");
             foreach (Position pos in possibleMoves)
             {
                 Console.WriteLine("{1}: My position is {0}", pos, piece.GetType());
             }
-            Console.WriteLine("=================");
+            Console.WriteLine("======================================================");
         }
 
         private void Move(Piece piece)
         {
+            PrintPossiblePositions(piece);
             var possibleMoves = piece.GetValidMoves(board.MinDimension, board.MaxDimension).ToArray();
             bool retry = true;
             while (retry)
             {
                 Position newPosition = possibleMoves[_rnd.Next(possibleMoves.Length)];
+
+                if (piece.IsCurrentPositionSameAsNewPosition(newPosition))
+                    continue;
+
                 if (board.CanMoveToNewSpot(newPosition))
                 {
+                    Console.WriteLine("======================================================");
+                    Console.WriteLine("{1}: Current position {0}", piece.CurrentPosition, piece.GetType());
+                    Console.WriteLine("{1}: Moving to position {0}", newPosition, piece.GetType());
                     board.MovePieceToPosition(piece.CurrentPosition, newPosition, piece);
+                    Console.WriteLine("{1}: After movement new position {0}", piece.CurrentPosition, piece.GetType());
+                    Console.WriteLine("======================================================");
                     retry = false;
                 }
                 else
                 {
-                    Console.WriteLine(" Retrying as spot is blocked for {0}", piece.GetType());
+                    Console.WriteLine(" Retrying as spot is occupied by {0}", piece.GetType());
                     retry = true;
                 }
             }

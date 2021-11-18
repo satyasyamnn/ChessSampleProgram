@@ -59,7 +59,7 @@ namespace ChessLib.V2
             _boxes[currentPosition.X, currentPosition.Y] = null;
             Spot spot = new Spot(newPosition, piece);
             _boxes[newPosition.X, newPosition.Y] = spot;
-            piece.SetNewPosition(newPosition);
+            piece.SetNewPosition(new Position(newPosition.X + 1, newPosition.Y + 1));
         }
 
         public Piece GetPieceAtPosition(Position pos)
