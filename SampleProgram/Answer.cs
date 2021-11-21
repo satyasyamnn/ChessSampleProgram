@@ -6,11 +6,10 @@ using System.Linq;
 
 namespace SampleProgram
 {
-
     public class ComplexGame
     {
         IBoard board;
-        //Position knightPosition;
+        Position knightPosition;
         Position bishopPosition;
         Position queenPosition;
 
@@ -25,24 +24,24 @@ namespace SampleProgram
         {
             board = new Board(8, 8);
 
-            //knightPosition = new Position(3, 3);
-            bishopPosition = new Position(1, 3);
-            queenPosition = new Position(3, 1);
+            knightPosition = new Position(3, 3);
+            bishopPosition = new Position(6, 8);
+            queenPosition = new Position(3, 5);
 
-            //board.AddPieceAtPosition(knightPosition, new Knight(knightPosition));
+            board.AddPieceAtPosition(knightPosition, new Knight(knightPosition));
             board.AddPieceAtPosition(bishopPosition, new Bishop(bishopPosition));
             board.AddPieceAtPosition(queenPosition, new Queen(queenPosition));
         }
 
         public void Play(int moves)
         {
-            //Piece knight = board.GetPieceAtPosition(knightPosition);
+            Piece knight = board.GetPieceAtPosition(knightPosition);
             Piece bishop = board.GetPieceAtPosition(bishopPosition);
             Piece queen = board.GetPieceAtPosition(queenPosition);
 
             for (var move = 1; move <= moves; move++)
             {
-                //Move(knight);
+                Move(knight);
                 Move(bishop);
                 Move(queen);
             }
@@ -72,7 +71,7 @@ namespace SampleProgram
                 if (piece.IsCurrentPositionSameAsNewPosition(newPosition))
                     continue;
 
-                if (board.CanMoveToNewSpot(newPosition))
+                if (board.IsBoardSpotEmpty(newPosition))
                 {
                     Console.WriteLine("======================================================");
                     Console.WriteLine("{1}: Current position {0}", piece.CurrentPosition, piece.GetType());

@@ -1,20 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ChessLib.V2
 {
-    public interface IBoard
-    {
-        int Dimension1 { get; }
-        int Dimension2 { get; }
-        int MinDimension { get; }
-        int MaxDimension { get; }
-        void ResetBoard();
-        void AddPieceAtPosition(Position pos, Piece piece);
-        void MovePieceToPosition(Position currentPosition, Position newPosition, Piece piece);
-        bool CanMoveToNewSpot(Position pos);
-        Piece GetPieceAtPosition(Position pos);
-    }
-
     public class Board : IBoard
     {
         private Spot[,] _boxes;
@@ -54,22 +42,31 @@ namespace ChessLib.V2
 
         public void MovePieceToPosition(Position currentPosition, Position newPosition, Piece piece)
         {
-            currentPosition = GetAdjustedPosition(currentPosition);
-            newPosition = GetAdjustedPosition(newPosition);
-            _boxes[currentPosition.X, currentPosition.Y] = null;
-            Spot spot = new Spot(newPosition, piece);
-            _boxes[newPosition.X, newPosition.Y] = spot;
-            piece.SetNewPosition(new Position(newPosition.X + 1, newPosition.Y + 1));
+            if (IsBoardSpotEmpty(newPosition))
+            {
+                currentPosition = GetAdjustedPosition(currentPosition);
+                newPosition = GetAdjustedPosition(newPosition);
+                _boxes[currentPosition.X, currentPosition.Y] = null;
+                Spot spot = new Spot(newPosition, piece);
+                _boxes[newPosition.X, newPosition.Y] = spot;
+                piece.SetNewPosition(new Position(newPosition.X + 1, newPosition.Y + 1));
+            }
+            else
+            {
+                throw new ArgumentException("Spot is filled. Please use another spot");
+            }
         }
 
         public Piece GetPieceAtPosition(Position pos)
         {
             pos = GetAdjustedPosition(pos);
             Spot currentSpot = _boxes[pos.X, pos.Y];
-            return currentSpot.Piece;
+            if (currentSpot != null && currentSpot.Piece != null)
+                return currentSpot.Piece;
+            return null;
         }
 
-        public bool CanMoveToNewSpot(Position pos)
+        public bool IsBoardSpotEmpty(Position pos)
         {
             pos = GetAdjustedPosition(pos);
             int x = pos.X;
@@ -91,6 +88,21 @@ namespace ChessLib.V2
             int x = pos.X - 1;
             int y = pos.Y - 1;
             return new Position(x, y);
+        }
+
+        public IList<Piece> GetAllPieces()
+        {
+            IList<Piece> pieces = new List<Piece>();
+            for (int i = 0; i < Dimension1; i++)
+            {
+                for (int j = 0; j < Dimension2; j++)
+                {
+                    Spot spot = _boxes[i, j];
+                    if (spot != null && spot.Piece != null)
+                        pieces.Add(spot.Piece);
+                }
+            }
+            return pieces;
         }
     }
 }
